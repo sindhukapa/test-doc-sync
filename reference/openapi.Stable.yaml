@@ -1,0 +1,2636 @@
+openapi: 3.0.0
+info:
+  title: Platform API
+  version: Stable
+  contact:
+    name: ZoomInfo Customer Support
+    email: help@zoominfo.com
+  description: The platform API
+tags:
+  - name: search
+  - name: enrich
+paths:
+  /data/v1/companies/enrich:
+    post:
+      operationId: EnrichInterface_enrichCompany
+      description: Returns a list of Companies from ZoomInfo's data that meet the specified enrich criteria.
+      parameters: []
+      responses:
+        '200':
+          description: The request completed successfully and the requested data was returned
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/CompanyEnrichResponse'
+        '400':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+        '404':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+      tags:
+        - enrich
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyEnrichRequest'
+      security:
+        - OAuth2Auth:
+            - api:enrich:company
+      x-api-roles:
+        - fea:zia
+        - fea:api
+      x-api-role-requirement: ANY_REQUIRED
+  /data/v1/companies/search:
+    post:
+      operationId: SearchInterface_searchCompany
+      description: Returns a list of Companies from ZoomInfo's data that meet the specified search criteria.
+      parameters:
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request completed successfully and the requested data was returned
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/CompanySearchResponse'
+        '400':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+        '404':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+      tags:
+        - search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanySearchRequest'
+      security:
+        - OAuth2Auth:
+            - api:search:company
+      x-api-roles:
+        - fea:zia
+        - fea:api
+      x-api-role-requirement: ANY_REQUIRED
+  /data/v1/contacts/enrich:
+    post:
+      operationId: EnrichInterface_enrichContact
+      description: Returns a list of Contacts from ZoomInfo's data that meet the specified enrich criteria.
+      parameters: []
+      responses:
+        '200':
+          description: The request completed successfully and the requested data was returned
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ContactEnrichResponse'
+        '400':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+        '404':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+      tags:
+        - enrich
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactEnrichRequest'
+      security:
+        - OAuth2Auth:
+            - api:enrich:contact
+      x-api-roles:
+        - fea:zia
+        - fea:api
+      x-api-role-requirement: ANY_REQUIRED
+  /data/v1/contacts/search:
+    post:
+      operationId: SearchInterface_searchContact
+      description: Returns a list of Contacts from ZoomInfo's data that meet the specified search criteria.
+      parameters:
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request completed successfully and the requested data was returned
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ContactSearchResponse'
+        '400':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+        '404':
+          description: The base model for all error responses to be used when specifying the response of an operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorResponseModel'
+      tags:
+        - search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactSearchRequest'
+      security:
+        - OAuth2Auth:
+            - api:search:contact
+      x-api-roles:
+        - fea:zia
+        - fea:api
+      x-api-role-requirement: ANY_REQUIRED
+security:
+  - OAuth2Auth: []
+components:
+  schemas:
+    AttributeMeta:
+      type: object
+      required:
+        - matchStatus
+        - matchInsight
+        - input
+      properties:
+        matchStatus:
+          type: string
+        matchInsight:
+          $ref: '#/components/schemas/MatchInsights'
+        input:
+          anyOf:
+            - $ref: '#/components/schemas/ContactEnrichRequestCriteria'
+            - $ref: '#/components/schemas/CompanyEnrichRequestCriteria'
+    CommonEnrichRequestAttributes:
+      type: object
+      properties:
+        companyId:
+          type: integer
+          format: int64
+          description: Unique ZoomInfo identifier for a company.
+        companyName:
+          type: string
+          description: Company name.
+    CommonEnrichResponseAttributes:
+      type: object
+      properties:
+        socialMediaUrls:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              url:
+                type: string
+              followerCount:
+                type: string
+            required:
+              - type
+              - url
+          description: Social media URLs for the company (e.g., Facebook, Twitter, LinkedIn and so on).
+        primaryIndustry:
+          type: array
+          items:
+            type: string
+          description: Top-level industry for a company.
+        primaryIndustryCode:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: Top-level industry for a company along with its code.
+        primarySubIndustryCode:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: Top-level sub-industry for a company along with its code.
+        industries:
+          type: array
+          items:
+            type: string
+          description: The industry grouping for the company. A company can have multiple industries.
+        industryCodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: The industry grouping for the company along with it's codes. A company can have multiple industries.
+        website:
+          type: string
+          description: URL to the company website in http://www.example.com format.
+        type:
+          type: string
+          description: Company type (private, public, npo, education, government, other).
+        ticker:
+          type: string
+          description: Company public stock exchange ticker.
+        name:
+          type: string
+          description: Company name.
+        descriptionList:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+            required:
+              - description
+          description: List of descriptions associated with the company.
+        phone:
+          type: string
+          description: Phone number of the company's primary address.
+        fax:
+          type: string
+          description: Fax number of the company's primary address.
+        street:
+          type: string
+          description: Street of the company's primary address.
+        city:
+          type: string
+          description: City of the company's primary address.
+        state:
+          type: string
+          description: State or province of the company's primary address.
+        zipCode:
+          type: string
+          description: Zip Code or Postal Code of the company's primary address.
+        country:
+          type: string
+          description: Country of the company's primary address.
+        continent:
+          type: string
+          description: Continent of the company's primary address.
+        logo:
+          type: string
+          description: The URL which can be used to retrieve the logo for the company.
+        employeeCount:
+          type: integer
+          format: int32
+          description: Approximate number of people employed by the company.
+        sicCodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: The Standard Industrial Classification is a system for classifying industries by a four-digit code.
+        naicsCodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy.
+        employeeRange:
+          type: string
+          description: Employee range for a company.
+        employeeGrowth:
+          allOf:
+            - $ref: '#/components/schemas/EmployeeGrowth'
+          description: Employee growth of the company in the past two years. A one- and two-year growth percentage is provided as well as a quarter-by-quarter breakdown of total employee count.
+        revenueRange:
+          type: string
+          description: Revenue range for a company.
+    CommonSearchRequestAttributes:
+      type: object
+      properties:
+        companyTicker:
+          type: array
+          items:
+            type: string
+          description: Company stock ticker symbol.
+        companyDescription:
+          type: string
+          description: Search for companies based on description.  Accepts a space-separated list of individual words.
+        companyType:
+          type: string
+          description: 'Company type (private, public, etc.). Accepts a comma delimited string of types listed in the endpoint: /lookup/companytype.'
+        address:
+          type: string
+          description: Company address.
+        street:
+          type: string
+          description: Company street.
+        state:
+          type: string
+          description: Company state.
+        zipCode:
+          type: string
+          description: Zip Code of the company's primary address.
+        country:
+          type: string
+          description: Company country.
+        continent:
+          type: string
+          description: Company continent.
+        parentId:
+          type: string
+          description: ZoomInfo Company ID for parent company.
+        zipCodeRadiusMiles:
+          type: integer
+          format: int16
+          description: Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided. Supported values are [10, 25, 50, 100, 250]
+        hashTagString:
+          type: string
+          description: Hash tags for a company. Can include a comma-separated list.
+        techAttributeTagList:
+          type: string
+          description: Specify technology product tags.
+        primaryIndustriesOnly:
+          type: boolean
+          description: Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
+        subUnitTypes:
+          type: string
+          description: 'Company sub types (e.g., division, subsidiary) from the endpoint: /lookup/subunittypes. Use this in conjunction with parentId or ultimateParentId.'
+        industryCodes:
+          type: string
+          description: Top-level industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list.
+        industryKeywords:
+          type: string
+          description: Industry keywords associated with a company. Can include either 'AND' or 'OR' operators. For example, 'software AND security' or 'software OR security'.
+        sicCodes:
+          type: string
+          description: 'Four-digit numerical codes assigned by the U.S. government to business establishments to identify the primary business of the establishment. Accepts a comma-separated list of values from the endpoint: /lookup/siccode.'
+        naicsCodes:
+          type: string
+          description: 'Four-digit numerical codes assigned by the U.S. government to business establishments to identify the primary business of the establishment. Accepts a comma-separated list of values from the endpoint: /lookup/naicscode.'
+        revenue:
+          type: string
+          description: 'Annual revenue range in U.S. dollars. Accepts a comma-separated list of values from the endpoint: /lookup/revenuerange. Alternatively, for more granular ranges, you can use the revenueMin and revenueMax parameters.'
+        revenueMin:
+          type: integer
+          format: int32
+          description: Minimum annual revenue for a company in U.S. dollars (expressed in thousands). Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+        revenueMax:
+          type: integer
+          format: int32
+          description: Maximum annual revenue for a company in U.S. dollars (expressed in thousands). Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+        employeeRangeMin:
+          type: string
+          description: Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+        employeeRangeMax:
+          type: string
+          description: Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+        employeeCount:
+          type: string
+          description: 'Employee count range. Accepts a comma-separated list of values from the endpoint: /lookup/employeecount. Alternatively, for more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.'
+        companyRanking:
+          type: string
+          description: 'Company ranking (e.g., Fortune 500).  Accepts a comma separated list of IDs from the endpoint: /lookup/companyranking.'
+        metroRegion:
+          type: string
+          description: 'Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas from the endpoint: /lookup/metroarea.'
+        locationSearchType:
+          type: string
+          description: Location type (PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ).
+        fundingAmountMin:
+          type: integer
+          format: int32
+          description: Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
+        fundingAmountMax:
+          type: integer
+          format: int32
+          description: Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
+        fundingStartDate:
+          type: string
+          format: date
+          description: Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+        fundingEndDate:
+          type: string
+          format: date
+          description: End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+        zoominfoContactsMin:
+          type: string
+          description: Minimum number of ZoomInfo contacts associated with company.
+        zoominfoContactsMax:
+          type: string
+          description: Maximum number of ZoomInfo contacts associated with company.
+        excludedRegions:
+          type: string
+          description: 'Exclude a company state or metro area. Accepts a comma-separated list of U.S. and Canada states and metro areas from the endpoints: /lookup/state and /lookup/metroarea.'
+        companyStructureIncludedSubUnitTypes:
+          type: string
+          description: Company hierarchical structure.
+        oneYearEmployeeGrowthRateMin:
+          type: string
+          description: Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
+        oneYearEmployeeGrowthRateMax:
+          type: string
+          description: Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
+        twoYearEmployeeGrowthRateMin:
+          type: string
+          description: Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
+        twoYearEmployeeGrowthRateMax:
+          type: string
+          description: Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
+        engagementStartDate:
+          type: string
+          format: date
+          description: Engagement start date in YYYY-MM-DD format.
+        engagementEndDate:
+          type: string
+          format: date
+          description: Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
+        engagementType:
+          type: array
+          items:
+            type: string
+          description: List of engagement types to search for. Accepted values are a list of 'email', 'phone', 'online meeting'.
+        companyId:
+          type: string
+          description: ZoomInfo unique identifier for the company. Will accept a comma-separated list.
+        companyName:
+          type: string
+          description: Company name.
+        companyWebsite:
+          type: string
+          description: Company domain. Accepts a comma-separated list.
+        ultimateParentId:
+          type: string
+          description: ZoomInfo Company ID for ultimate parent company.
+    Company:
+      type: object
+      required:
+        - companyId
+        - companyName
+        - companyPhone
+        - companyWebsite
+      properties:
+        companyId:
+          type: integer
+          format: int64
+        companyName:
+          type: string
+        companyPhone:
+          type: string
+        companyWebsite:
+          type: string
+    CompanyEnrichRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/CompanyEnrichRequestResource'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    CompanyEnrichRequestAttributes:
+      type: object
+      required:
+        - outputFields
+        - requiredFields
+        - matchCompanyInput
+      properties:
+        outputFields:
+          type: array
+          items:
+            type: string
+        requiredFields:
+          type: array
+          items:
+            type: string
+        matchCompanyInput:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyEnrichRequestCriteria'
+    CompanyEnrichRequestCriteria:
+      type: object
+      properties:
+        companyId:
+          type: integer
+          format: int64
+          description: Unique ZoomInfo identifier for a company.
+        companyName:
+          type: string
+          description: Company name.
+        companyWebsite:
+          type: string
+          description: Company website URL in http://www.example.com format.
+        companyTicker:
+          type: array
+          items:
+            type: string
+          description: Company stock ticker symbol.
+        companyPhone:
+          type: string
+          description: Phone number of the company headquarters.
+        companyFax:
+          type: string
+          description: Fax number of the company headquarters.
+        companyStreet:
+          type: string
+          description: Street address for the company's primary address.
+        companyCity:
+          type: string
+          description: City for the company's primary address.
+        companyState:
+          type: string
+          description: Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., 'new hampshire'), the two-letter common abbreviation for a U.S. state (e.g., 'nh'), or values provided in the State lookup endpoint.
+        companyZipCode:
+          type: string
+          description: Zip code or postal code for the company's primary address.
+        companyCountry:
+          type: string
+          description: Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
+        ipAddress:
+          type: string
+          description: IP address associated with the company.
+    CompanyEnrichRequestResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - CompanyEnrichRequest
+        attributes:
+          $ref: '#/components/schemas/CompanyEnrichRequestAttributes'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    CompanyEnrichResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyEnrichResponseResource'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    CompanyEnrichResponseAttributes:
+      type: object
+      properties:
+        socialMediaUrls:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              url:
+                type: string
+              followerCount:
+                type: string
+            required:
+              - type
+              - url
+          description: Social media URLs for the company (e.g., Facebook, Twitter, LinkedIn and so on).
+        primaryIndustry:
+          type: array
+          items:
+            type: string
+          description: Top-level industry for a company.
+        primaryIndustryCode:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: Top-level industry for a company along with its code.
+        primarySubIndustryCode:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: Top-level sub-industry for a company along with its code.
+        industries:
+          type: array
+          items:
+            type: string
+          description: The industry grouping for the company. A company can have multiple industries.
+        industryCodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: The industry grouping for the company along with it's codes. A company can have multiple industries.
+        website:
+          type: string
+          description: URL to the company website in http://www.example.com format.
+        type:
+          type: string
+          description: Company type (private, public, npo, education, government, other).
+        ticker:
+          type: string
+          description: Company public stock exchange ticker.
+        name:
+          type: string
+          description: Company name.
+        descriptionList:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+            required:
+              - description
+          description: List of descriptions associated with the company.
+        phone:
+          type: string
+          description: Phone number of the company's primary address.
+        fax:
+          type: string
+          description: Fax number of the company's primary address.
+        street:
+          type: string
+          description: Street of the company's primary address.
+        city:
+          type: string
+          description: City of the company's primary address.
+        state:
+          type: string
+          description: State or province of the company's primary address.
+        zipCode:
+          type: string
+          description: Zip Code or Postal Code of the company's primary address.
+        country:
+          type: string
+          description: Country of the company's primary address.
+        continent:
+          type: string
+          description: Continent of the company's primary address.
+        logo:
+          type: string
+          description: The URL which can be used to retrieve the logo for the company.
+        employeeCount:
+          type: integer
+          format: int32
+          description: Approximate number of people employed by the company.
+        sicCodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: The Standard Industrial Classification is a system for classifying industries by a four-digit code.
+        naicsCodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy.
+        employeeRange:
+          type: string
+          description: Employee range for a company.
+        employeeGrowth:
+          allOf:
+            - $ref: '#/components/schemas/EmployeeGrowth'
+          description: Employee growth of the company in the past two years. A one- and two-year growth percentage is provided as well as a quarter-by-quarter breakdown of total employee count.
+        revenueRange:
+          type: string
+          description: Revenue range for a company.
+        domainList:
+          type: array
+          items:
+            type: string
+          description: List of domains associated with a company.
+        revenue:
+          type: integer
+          format: int64
+          description: Approximate yearly revenue for the company in 1000's. For example, a $100M company is expressed as 100000.
+        numberOfContactsInZoomInfo:
+          type: integer
+          format: int32
+          description: Number of ZoomInfo contacts associated with company.
+        companyStatus:
+          type: string
+          description: Company status.
+        companyStatusDate:
+          type: string
+          format: date-time
+          description: Date of last company status update.
+        competitors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Competitor'
+          description: List of competitors.
+        ultimateParentId:
+          type: integer
+          format: int64
+          description: Unique ZoomInfo identifier for parent company (if exists).
+        ultimateParentName:
+          type: string
+          description: Company name for ultimate parent company (if exists).
+        ultimateParentRevenue:
+          type: integer
+          format: int32
+          description: Approximate yearly revenue for the ultimate parent company.
+        ultimateParentEmployees:
+          type: integer
+          format: int32
+          description: Approximate number of people employed by the ultimate parent company.
+        subUnitCodes:
+          type: array
+          items:
+            type: string
+          description: Company sub unit codes.
+        subUnitType:
+          type: string
+          description: Company sub unit types (e.g., division, subsidiary and so on).
+        subUnitIndustries:
+          type: array
+          items:
+            type: string
+          description: Company sub unit industries.
+        parentId:
+          type: integer
+          format: int64
+          description: Unique ZoomInfo identifier associated with the parent company.
+        parentName:
+          type: string
+          description: Company name associated with the parent company.
+        locationCount:
+          type: integer
+          format: int32
+          description: Number of office locations associated with a company.
+        locationMatch:
+          type: object
+          properties:
+            companyId:
+              type: integer
+              format: int64
+            address:
+              type: object
+              properties:
+                street:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                country:
+                  type: string
+                zipCode:
+                  type: string
+              required:
+                - street
+                - city
+                - state
+                - country
+                - zipCode
+            addressStatus:
+              type: string
+          required:
+            - companyId
+            - address
+            - addressStatus
+          description: Location details that match address-related input parameters. Includes companyId, address, and addressStatus (CURRENT, VALID, PAST).
+        domainRank:
+          type: string
+          description: "Powered by SimilarWeb: Domain Rank is calculated based on our algorithm of a site's monthly web traffic. The lower the number, the higher the site's rank."
+        metroArea:
+          type: string
+          description: Company metro area.
+        lastUpdatedDate:
+          type: string
+          format: date-time
+          description: Date on which the company record was last updated.
+        createdDate:
+          type: string
+          format: date-time
+          description: Date on which the company record was created.
+        certificationDate:
+          type: string
+          format: date-time
+          description: Date of certification.
+        certified:
+          type: boolean
+          description: Denotes if ZoomInfo's research and data team has confirmed activity within the past 12 months.
+        hashtags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Hashtag'
+          description: List of hashtags associated with a company.
+        products:
+          type: array
+          items:
+            type: string
+          description: List of products associated with a company.
+        techAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TechAttribute'
+          description: Technology products currently utilized by a company. Organized by category, vendor, and product.
+        companyFunding:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyFunding'
+          description: List of funding rounds including date, type , investors, and amount.
+        recentFundingAmount:
+          type: integer
+          format: int32
+          description: Most recent funding amount.
+        recentFundingDate:
+          type: string
+          format: date-time
+          description: Date of most recent funding.
+        totalFundingAmount:
+          type: integer
+          format: int32
+          description: Total funding to date.
+        foundedYear:
+          type: string
+          description: Year the company was founded.
+        businessModel:
+          type: array
+          items:
+            type: string
+          description: Business model for a company.
+        isDefunct:
+          type: boolean
+          description: Indicates whether the company still exists.
+        departmentBudgets:
+          allOf:
+            - $ref: '#/components/schemas/DepartmentBudget'
+          description: Estimated department budgets. Returns estimated budget values including marketingBudget, financeBudget, itBudget and hrBudget.
+        employeeCountByDepartment:
+          allOf:
+            - $ref: '#/components/schemas/EmployeeCountByDepartment'
+          description: Employee count by company department.
+        engagements:
+          type: array
+          items:
+            type: string
+          description: List of the company's engagements. Includes the date and type of each engagement.
+    CompanyEnrichResponseResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - CompanyEnrichResponse
+        attributes:
+          $ref: '#/components/schemas/CompanyEnrichResponseAttributes'
+        meta:
+          $ref: '#/components/schemas/AttributeMeta'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    CompanyFunding:
+      type: object
+      required:
+        - date
+        - type
+        - amount
+        - investors
+      properties:
+        date:
+          type: string
+        type:
+          type: string
+        amount:
+          type: integer
+          format: int64
+        investors:
+          type: array
+          items:
+            type: string
+    CompanySearchRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/CompanySearchRequestResource'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    CompanySearchRequestAttributes:
+      type: object
+      properties:
+        marketingDepartmentBudgetMin:
+          type: integer
+          format: int32
+          description: Minimum marketing department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        marketingDepartmentBudgetMax:
+          type: integer
+          format: int32
+          description: Maximum marketing department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        financeDepartmentBudgetMin:
+          type: integer
+          format: int32
+          description: Minimum finance department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        financeDepartmentBudgetMax:
+          type: integer
+          format: int32
+          description: Maximum finance department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        itDepartmentBudgetMin:
+          type: integer
+          format: int32
+          description: Minimum information technology department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        itDepartmentBudgetMax:
+          type: integer
+          format: int32
+          description: Maximum information technology department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        hrDepartmentBudgetMin:
+          type: integer
+          format: int32
+          description: Minimum human resources department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        hrDepartmentBudgetMax:
+          type: integer
+          format: int32
+          description: Maximum human resources department budget amount in thousands (e.g., 1 = 1000, 500 = 500,000).  Minimum value is 0, maximum value is 2147483647 (approximately 2 trillion).
+        certified:
+          type: integer
+          format: int32
+          description: Denotes if ZoomInfo's research and data team has confirmed activity within the past 12 months. 1 = certified, 0 = not certified.
+        excludeDefunctCompanies:
+          type: boolean
+          description: Include or exclude defunct companies. The default value is false.
+        businessModel:
+          type: array
+          items:
+            type: string
+          description: Search using Business Model (B2C, B2B, B2G) for a company. Default is All.
+        companyTicker:
+          type: array
+          items:
+            type: string
+          description: Company stock ticker symbol.
+        companyDescription:
+          type: string
+          description: Search for companies based on description.  Accepts a space-separated list of individual words.
+        companyType:
+          type: string
+          description: 'Company type (private, public, etc.). Accepts a comma delimited string of types listed in the endpoint: /lookup/companytype.'
+        address:
+          type: string
+          description: Company address.
+        street:
+          type: string
+          description: Company street.
+        state:
+          type: string
+          description: Company state.
+        zipCode:
+          type: string
+          description: Zip Code of the company's primary address.
+        country:
+          type: string
+          description: Company country.
+        continent:
+          type: string
+          description: Company continent.
+        parentId:
+          type: string
+          description: ZoomInfo Company ID for parent company.
+        zipCodeRadiusMiles:
+          type: integer
+          format: int16
+          description: Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided. Supported values are [10, 25, 50, 100, 250]
+        hashTagString:
+          type: string
+          description: Hash tags for a company. Can include a comma-separated list.
+        techAttributeTagList:
+          type: string
+          description: Specify technology product tags.
+        primaryIndustriesOnly:
+          type: boolean
+          description: Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
+        subUnitTypes:
+          type: string
+          description: 'Company sub types (e.g., division, subsidiary) from the endpoint: /lookup/subunittypes. Use this in conjunction with parentId or ultimateParentId.'
+        industryCodes:
+          type: string
+          description: Top-level industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list.
+        industryKeywords:
+          type: string
+          description: Industry keywords associated with a company. Can include either 'AND' or 'OR' operators. For example, 'software AND security' or 'software OR security'.
+        sicCodes:
+          type: string
+          description: 'Four-digit numerical codes assigned by the U.S. government to business establishments to identify the primary business of the establishment. Accepts a comma-separated list of values from the endpoint: /lookup/siccode.'
+        naicsCodes:
+          type: string
+          description: 'Four-digit numerical codes assigned by the U.S. government to business establishments to identify the primary business of the establishment. Accepts a comma-separated list of values from the endpoint: /lookup/naicscode.'
+        revenue:
+          type: string
+          description: 'Annual revenue range in U.S. dollars. Accepts a comma-separated list of values from the endpoint: /lookup/revenuerange. Alternatively, for more granular ranges, you can use the revenueMin and revenueMax parameters.'
+        revenueMin:
+          type: integer
+          format: int32
+          description: Minimum annual revenue for a company in U.S. dollars (expressed in thousands). Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+        revenueMax:
+          type: integer
+          format: int32
+          description: Maximum annual revenue for a company in U.S. dollars (expressed in thousands). Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+        employeeRangeMin:
+          type: string
+          description: Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+        employeeRangeMax:
+          type: string
+          description: Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+        employeeCount:
+          type: string
+          description: 'Employee count range. Accepts a comma-separated list of values from the endpoint: /lookup/employeecount. Alternatively, for more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.'
+        companyRanking:
+          type: string
+          description: 'Company ranking (e.g., Fortune 500).  Accepts a comma separated list of IDs from the endpoint: /lookup/companyranking.'
+        metroRegion:
+          type: string
+          description: 'Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas from the endpoint: /lookup/metroarea.'
+        locationSearchType:
+          type: string
+          description: Location type (PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ).
+        fundingAmountMin:
+          type: integer
+          format: int32
+          description: Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
+        fundingAmountMax:
+          type: integer
+          format: int32
+          description: Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
+        fundingStartDate:
+          type: string
+          format: date
+          description: Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+        fundingEndDate:
+          type: string
+          format: date
+          description: End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+        zoominfoContactsMin:
+          type: string
+          description: Minimum number of ZoomInfo contacts associated with company.
+        zoominfoContactsMax:
+          type: string
+          description: Maximum number of ZoomInfo contacts associated with company.
+        excludedRegions:
+          type: string
+          description: 'Exclude a company state or metro area. Accepts a comma-separated list of U.S. and Canada states and metro areas from the endpoints: /lookup/state and /lookup/metroarea.'
+        companyStructureIncludedSubUnitTypes:
+          type: string
+          description: Company hierarchical structure.
+        oneYearEmployeeGrowthRateMin:
+          type: string
+          description: Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
+        oneYearEmployeeGrowthRateMax:
+          type: string
+          description: Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
+        twoYearEmployeeGrowthRateMin:
+          type: string
+          description: Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
+        twoYearEmployeeGrowthRateMax:
+          type: string
+          description: Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
+        engagementStartDate:
+          type: string
+          format: date
+          description: Engagement start date in YYYY-MM-DD format.
+        engagementEndDate:
+          type: string
+          format: date
+          description: Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
+        engagementType:
+          type: array
+          items:
+            type: string
+          description: List of engagement types to search for. Accepted values are a list of 'email', 'phone', 'online meeting'.
+        companyId:
+          type: string
+          description: ZoomInfo unique identifier for the company. Will accept a comma-separated list.
+        companyName:
+          type: string
+          description: Company name.
+        companyWebsite:
+          type: string
+          description: Company domain. Accepts a comma-separated list.
+        ultimateParentId:
+          type: string
+          description: ZoomInfo Company ID for ultimate parent company.
+    CompanySearchRequestResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - CompanySearchRequest
+        attributes:
+          $ref: '#/components/schemas/CompanySearchRequestAttributes'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    CompanySearchResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanySearchResponseResource'
+        meta:
+          $ref: '#/components/schemas/Meta'
+        links:
+          $ref: '#/components/schemas/Links'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    CompanySearchResponseAttributes:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Company Name.
+        city:
+          type: string
+          description: City of the company's primary address.
+        state:
+          type: string
+          description: State or province of the company's primary address.
+        country:
+          type: string
+          description: Country of the company's primary address.
+        revenue:
+          type: string
+          description: Approximate yearly revenue for the company in 1000's. For example, a 100M company is expressed as 100000.
+        employeeCount:
+          type: string
+          description: Approximate number of people employed by the company.
+        website:
+          type: string
+          description: Company website URL.
+        logo:
+          type: string
+          description: The URL which can be used to retrieve the logo for the company.
+    CompanySearchResponseResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - CompanySearchResponse
+        attributes:
+          $ref: '#/components/schemas/CompanySearchResponseAttributes'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    Competitor:
+      type: object
+      required:
+        - id
+        - name
+        - rank
+        - website
+        - employeeCount
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        rank:
+          type: integer
+          format: int32
+        website:
+          type: string
+        employeeCount:
+          type: integer
+          format: int32
+    ContactEnrichRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ContactEnrichRequestResource'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    ContactEnrichRequestAttributes:
+      type: object
+      required:
+        - outputFields
+        - requiredFields
+        - matchPersonInput
+      properties:
+        outputFields:
+          type: array
+          items:
+            type: string
+        requiredFields:
+          type: array
+          items:
+            type: string
+        matchPersonInput:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactEnrichRequestCriteria'
+    ContactEnrichRequestCriteria:
+      type: object
+      properties:
+        personId:
+          type: integer
+          format: int64
+          description: Unique ZoomInfo identifier for the contact.
+        fullName:
+          type: string
+          description: Contact full name.
+        firstName:
+          type: string
+          description: Contact first name.
+        lastName:
+          type: string
+          description: Contact last name.
+        emailAddress:
+          type: string
+          description: Business or Personal email address for the contact in example@example.com format.
+        phone:
+          type: string
+          description: Contact direct or mobile phone number.
+        jobTitle:
+          type: string
+          description: Contact title at current place of employment.
+        hashedEmail:
+          type: string
+          description: 'Hashed email value for the contact. Allows matching via an email address with the extra security of not exposing the email. Supported hash algorithms are: MD5, SHA1, SHA256 and SHA512.'
+        externalURL:
+          type: string
+          description: Social media URLs for the contact (e.g., Facebook, Twitter, LinkedIn).
+        lastUpdatedDateAfter:
+          type: string
+          format: date
+          description: The date after which the contact's profile was last updated.
+        validDateAfter:
+          type: string
+          format: date
+          description: The date after which the contact's profile was last validated.
+        contactAccuracyScoreMin:
+          type: string
+          description: Minimum accuracy score for enrich result. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
+        companyId:
+          type: integer
+          format: int64
+          description: Unique ZoomInfo identifier for a company.
+        companyName:
+          type: string
+          description: Company name.
+    ContactEnrichRequestResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - ContactEnrichRequest
+        attributes:
+          $ref: '#/components/schemas/ContactEnrichRequestAttributes'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    ContactEnrichResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactEnrichResponseResource'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    ContactEnrichResponseAttributes:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Contact first name.
+        middleName:
+          type: string
+          description: Contact middle name.
+        lastName:
+          type: string
+          description: Contact last name.
+        email:
+          type: string
+          description: Work email address for the contact in example@example.com format.
+        hasCanadianEmail:
+          type: boolean
+          description: Indicates whether the contact's email address is associated with a Canada domain.
+        phone:
+          type: string
+          description: Contact direct phone number.
+        directPhoneDoNotCall:
+          type: boolean
+          description: Contact flagged with do not call for direct phone.
+        street:
+          type: string
+          description: Street for the contact's work address.
+        city:
+          type: string
+          description: City for the contact's work address.
+        region:
+          type: string
+          description: State or province for the contact's work address.
+        metroArea:
+          type: string
+          description: Metro area for the contact's work address.
+        zipCode:
+          type: string
+          description: Zip Code or Postal Code for the contact's work address.
+        state:
+          type: string
+          description: State or province for the contact's work address.
+        country:
+          type: string
+          description: Country for the contact's work address.
+        continent:
+          type: string
+          description: Continent for the contact's work address.
+        personHasMoved:
+          type: string
+          description: Indicates ZoomInfo recognizes the contact does not match ZoomInfo's current company but does match known employment history.
+        withinEu:
+          type: boolean
+          description: Indicates whether the contact's work address is in Europe.
+        withinCalifornia:
+          type: boolean
+          description: Indicates whether the contact's work address is in California.
+        withinCanada:
+          type: boolean
+          description: Indicates whether the contact's work address is in Canada.
+        validDate:
+          type: string
+          format: date-time
+          description: Date on which the contact record was last validated.
+        lastUpdatedDate:
+          type: string
+          format: date-time
+          description: Date on which the contact record was last updated.
+        noticeProvidedDate:
+          type: string
+          format: date-time
+          description: Date on which the contact was notified of inclusion in ZoomInfo's database.
+        salutation:
+          type: string
+          description: Contact salutation.
+        suffix:
+          type: string
+          description: Contact suffix.
+        jobTitle:
+          type: string
+          description: Contact job title at current place of employment.
+        jobFunction:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              department:
+                type: string
+            required:
+              - name
+              - department
+          description: Contact job function at current place of employment.
+        education:
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
+          description: Contact education details.
+        hashedEmail:
+          type: array
+          items:
+            type: string
+          description: Contact MD5 encrypted email address(es).
+        picture:
+          type: string
+          description: The URL which can be used to retrieve a photo for the contact.
+        techSkills:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+              - id
+              - name
+          description: List of technology skills identified for a contact.
+        mobilePhone:
+          type: string
+          description: Contact mobile phone.
+        mobilePhoneDoNotCall:
+          type: boolean
+          description: Contact flagged with do not call for mobile phone.
+        externalUrls:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              url:
+                type: string
+            required:
+              - type
+              - url
+          description: Social media URLs for the contact (e.g., Facebook, Twitter, LinkedIn).
+        contactAccuracyScore:
+          type: string
+          description: This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 75 and maximum is 99.
+        isDefunct:
+          type: boolean
+          description: Indicates whether the company still exists.
+        employmentHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmploymentHistory'
+          description: Contact employment history.
+        managementLevel:
+          type: string
+          description: Contact management level.
+        locationCompanyId:
+          type: integer
+          format: int64
+          description: Company Id of contact's location.
+        positionStartDate:
+          type: string
+          format: date-time
+          description: The date on which the contact began their current employment.
+        yearsOfExperience:
+          type: string
+          description: Years of overall experience.
+        engagements:
+          type: array
+          items:
+            type: string
+          description: List of the contact's engagements. Includes the date and type of each engagement.
+        company:
+          type: object
+          properties:
+            socialMediaUrls:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  url:
+                    type: string
+                  followerCount:
+                    type: string
+                required:
+                  - type
+                  - url
+              description: Social media URLs for the company (e.g., Facebook, Twitter, LinkedIn and so on).
+            primaryIndustry:
+              type: array
+              items:
+                type: string
+              description: Top-level industry for a company.
+            primaryIndustryCode:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - name
+              description: Top-level industry for a company along with its code.
+            primarySubIndustryCode:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - name
+              description: Top-level sub-industry for a company along with its code.
+            industries:
+              type: array
+              items:
+                type: string
+              description: The industry grouping for the company. A company can have multiple industries.
+            industryCodes:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - name
+              description: The industry grouping for the company along with it's codes. A company can have multiple industries.
+            website:
+              type: string
+              description: URL to the company website in http://www.example.com format.
+            type:
+              type: string
+              description: Company type (private, public, npo, education, government, other).
+            ticker:
+              type: string
+              description: Company public stock exchange ticker.
+            name:
+              type: string
+              description: Company name.
+            descriptionList:
+              type: array
+              items:
+                type: object
+                properties:
+                  description:
+                    type: string
+                required:
+                  - description
+              description: List of descriptions associated with the company.
+            phone:
+              type: string
+              description: Phone number of the company's primary address.
+            fax:
+              type: string
+              description: Fax number of the company's primary address.
+            street:
+              type: string
+              description: Street of the company's primary address.
+            city:
+              type: string
+              description: City of the company's primary address.
+            state:
+              type: string
+              description: State or province of the company's primary address.
+            zipCode:
+              type: string
+              description: Zip Code or Postal Code of the company's primary address.
+            country:
+              type: string
+              description: Country of the company's primary address.
+            continent:
+              type: string
+              description: Continent of the company's primary address.
+            logo:
+              type: string
+              description: The URL which can be used to retrieve the logo for the company.
+            employeeCount:
+              type: integer
+              format: int32
+              description: Approximate number of people employed by the company.
+            sicCodes:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - name
+              description: The Standard Industrial Classification is a system for classifying industries by a four-digit code.
+            naicsCodes:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - name
+              description: The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy.
+            employeeRange:
+              type: string
+              description: Employee range for a company.
+            employeeGrowth:
+              allOf:
+                - $ref: '#/components/schemas/EmployeeGrowth'
+              description: Employee growth of the company in the past two years. A one- and two-year growth percentage is provided as well as a quarter-by-quarter breakdown of total employee count.
+            revenueRange:
+              type: string
+              description: Revenue range for a company.
+            revenue:
+              type: string
+              description: Company revenue (e.g., 400 Million).
+            revenueNumeric:
+              type: integer
+              format: int64
+              description: Company revenue in raw number (e.g., 400 million is expressed as 400000000).
+            ranking:
+              type: array
+              items:
+                type: string
+              description: Company ranking list (e.g., Fortune 500 and so on).
+            division:
+              type: string
+              description: Contact primary division name at current place of employment.
+          description: Contact's company data.
+    ContactEnrichResponseResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - ContactEnrichResponse
+        attributes:
+          $ref: '#/components/schemas/ContactEnrichResponseAttributes'
+        meta:
+          $ref: '#/components/schemas/AttributeMeta'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    ContactSearchRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ContactSearchRequestResource'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    ContactSearchRequestAttributes:
+      type: object
+      properties:
+        lastUpdatedDateAfter:
+          type: string
+          format: date
+          description: The date after which the contact's profile was last updated.
+        validDateAfter:
+          type: string
+          format: date
+          description: The date after which the contact's profile was last validated.
+        phone:
+          type: array
+          items:
+            type: string
+          description: List of person phones or mobile numbers.
+        positionStartDateMin:
+          type: string
+          format: date
+          description: Minimum date for when a contact began current employment. Use with positionStartDateMax to set a range.
+        positionStartDateMax:
+          type: string
+          format: date
+          description: Maximum date for when a contact began current employment. Use with positionStartDateMin to set a range.
+        supplementalEmail:
+          type: array
+          items:
+            type: string
+          description: Supplemental email address for the contact in example@example.com format.
+        webReferences:
+          type: array
+          items:
+            type: string
+          description: List of Web References for a contact. Default criteria is OR between multiple values. Should only contain english letters and numbers.
+        filterByBuyingCommittee:
+          type: boolean
+          description: Boolean flag for Buying committee. Setting it to true will filter the results based on the buying committees set for the account. Default is false.
+        buyingGroup:
+          type: array
+          items:
+            type: string
+          description: Filters results based on the provided Buying Group ID. Only one ID can be submitted.
+        techSkills:
+          type: array
+          items:
+            type: string
+          description: List of technology skills for a contact. Default criteria is OR between multiple values. Should only contain string numbers.
+        yearsOfExperience:
+          type: string
+          description: Years of overall experience. Must be a comma-separated string of the values found at /lookup/years-of-experience.
+        personId:
+          type: string
+          description: Unique ZoomInfo identifier for the contact. Can include a comma-separated list.
+        emailAddress:
+          type: string
+          description: Work email address for the contact in example@example.com format.
+        hashedEmail:
+          type: string
+          description: 'Hashed email value for the contact. Allows searching via an email address with the extra security of not exposing the email. Supported hash algorithms are: MD5, SHA1, SHA256 and SHA512.'
+        fullName:
+          type: string
+          description: Contact full name.
+        firstName:
+          type: string
+          description: Contact first name.
+        middleInitial:
+          type: string
+          description: Contact middle initial.
+        lastName:
+          type: string
+          description: Contact last name.
+        jobTitle:
+          type: string
+          description: Contact title at current place of employment. Use OR to input multiple job titles.
+        exactJobTitle:
+          type: string
+          description: Contact Title at current place of employment using exact match logic. Use OR to input multiple job titles.
+        excludeJobTitle:
+          type: string
+          description: Exclude comma-separated list of job titles.
+        managementLevel:
+          type: string
+          description: Contact management level at current place of employment.
+        excludeManagementLevel:
+          type: string
+          description: Exclude comma separated list of management levels.
+        department:
+          type: string
+          description: Contact department at current place of employment. Comma separated list of values from the lookup/department endpoint.
+        boardMember:
+          type: string
+          description: Exclude or include board members from search results. Values are include, exclude (the default) and only.
+        excludePartialProfiles:
+          type: boolean
+          description: Contacts who do not have an active company associated with them are considered partial profiles. Exclude contacts with a partial profile from search results. Default is false.
+        executivesOnly:
+          type: boolean
+          description: Return only executives. Default is false.
+        requiredFields:
+          type: string
+          description: Specify a list of required fields for each record returned. Can include email (business email), phone (direct or company phone), directPhone (contact's direct phone), personalEmail, and mobilePhone. Can include a comma-separated list of these fields.
+        contactAccuracyScoreMin:
+          type: string
+          description: Minimum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
+        contactAccuracyScoreMax:
+          type: string
+          description: Maximum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
+        jobFunction:
+          type: string
+          description: Contact job function at their current place of employment.
+        lastUpdatedInMonths:
+          type: integer
+          format: int32
+          description: Number of months within which the contact's profile was last updated.
+        hasBeenNotified:
+          type: string
+          description: Contacts who have been notified of inclusion in ZoomInfo's database. Values are include (the default), exclude and only.
+        companyPastOrPresent:
+          type: string
+          description: Returns companies based on a contact's work history. Values are present (default), past and pastAndPresent.
+        school:
+          type: string
+          description: Searches by contact's education.
+        degree:
+          type: string
+          description: Searches by contact's education.
+        locationCompanyId:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: Searches by contact's locationIds.
+        companyTicker:
+          type: array
+          items:
+            type: string
+          description: Company stock ticker symbol.
+        companyDescription:
+          type: string
+          description: Search for companies based on description.  Accepts a space-separated list of individual words.
+        companyType:
+          type: string
+          description: 'Company type (private, public, etc.). Accepts a comma delimited string of types listed in the endpoint: /lookup/companytype.'
+        address:
+          type: string
+          description: Company address.
+        street:
+          type: string
+          description: Company street.
+        state:
+          type: string
+          description: Company state.
+        zipCode:
+          type: string
+          description: Zip Code of the company's primary address.
+        country:
+          type: string
+          description: Company country.
+        continent:
+          type: string
+          description: Company continent.
+        parentId:
+          type: string
+          description: ZoomInfo Company ID for parent company.
+        zipCodeRadiusMiles:
+          type: integer
+          format: int16
+          description: Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided. Supported values are [10, 25, 50, 100, 250]
+        hashTagString:
+          type: string
+          description: Hash tags for a company. Can include a comma-separated list.
+        techAttributeTagList:
+          type: string
+          description: Specify technology product tags.
+        primaryIndustriesOnly:
+          type: boolean
+          description: Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
+        subUnitTypes:
+          type: string
+          description: 'Company sub types (e.g., division, subsidiary) from the endpoint: /lookup/subunittypes. Use this in conjunction with parentId or ultimateParentId.'
+        industryCodes:
+          type: string
+          description: Top-level industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list.
+        industryKeywords:
+          type: string
+          description: Industry keywords associated with a company. Can include either 'AND' or 'OR' operators. For example, 'software AND security' or 'software OR security'.
+        sicCodes:
+          type: string
+          description: 'Four-digit numerical codes assigned by the U.S. government to business establishments to identify the primary business of the establishment. Accepts a comma-separated list of values from the endpoint: /lookup/siccode.'
+        naicsCodes:
+          type: string
+          description: 'Four-digit numerical codes assigned by the U.S. government to business establishments to identify the primary business of the establishment. Accepts a comma-separated list of values from the endpoint: /lookup/naicscode.'
+        revenue:
+          type: string
+          description: 'Annual revenue range in U.S. dollars. Accepts a comma-separated list of values from the endpoint: /lookup/revenuerange. Alternatively, for more granular ranges, you can use the revenueMin and revenueMax parameters.'
+        revenueMin:
+          type: integer
+          format: int32
+          description: Minimum annual revenue for a company in U.S. dollars (expressed in thousands). Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+        revenueMax:
+          type: integer
+          format: int32
+          description: Maximum annual revenue for a company in U.S. dollars (expressed in thousands). Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
+        employeeRangeMin:
+          type: string
+          description: Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+        employeeRangeMax:
+          type: string
+          description: Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
+        employeeCount:
+          type: string
+          description: 'Employee count range. Accepts a comma-separated list of values from the endpoint: /lookup/employeecount. Alternatively, for more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.'
+        companyRanking:
+          type: string
+          description: 'Company ranking (e.g., Fortune 500).  Accepts a comma separated list of IDs from the endpoint: /lookup/companyranking.'
+        metroRegion:
+          type: string
+          description: 'Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas from the endpoint: /lookup/metroarea.'
+        locationSearchType:
+          type: string
+          description: Location type (PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ).
+        fundingAmountMin:
+          type: integer
+          format: int32
+          description: Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
+        fundingAmountMax:
+          type: integer
+          format: int32
+          description: Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
+        fundingStartDate:
+          type: string
+          format: date
+          description: Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+        fundingEndDate:
+          type: string
+          format: date
+          description: End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
+        zoominfoContactsMin:
+          type: string
+          description: Minimum number of ZoomInfo contacts associated with company.
+        zoominfoContactsMax:
+          type: string
+          description: Maximum number of ZoomInfo contacts associated with company.
+        excludedRegions:
+          type: string
+          description: 'Exclude a company state or metro area. Accepts a comma-separated list of U.S. and Canada states and metro areas from the endpoints: /lookup/state and /lookup/metroarea.'
+        companyStructureIncludedSubUnitTypes:
+          type: string
+          description: Company hierarchical structure.
+        oneYearEmployeeGrowthRateMin:
+          type: string
+          description: Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
+        oneYearEmployeeGrowthRateMax:
+          type: string
+          description: Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
+        twoYearEmployeeGrowthRateMin:
+          type: string
+          description: Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
+        twoYearEmployeeGrowthRateMax:
+          type: string
+          description: Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
+        engagementStartDate:
+          type: string
+          format: date
+          description: Engagement start date in YYYY-MM-DD format.
+        engagementEndDate:
+          type: string
+          format: date
+          description: Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
+        engagementType:
+          type: array
+          items:
+            type: string
+          description: List of engagement types to search for. Accepted values are a list of 'email', 'phone', 'online meeting'.
+        companyId:
+          type: string
+          description: ZoomInfo unique identifier for the company. Will accept a comma-separated list.
+        companyName:
+          type: string
+          description: Company name.
+        companyWebsite:
+          type: string
+          description: Company domain. Accepts a comma-separated list.
+        ultimateParentId:
+          type: string
+          description: ZoomInfo Company ID for ultimate parent company.
+    ContactSearchRequestResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - ContactSearchRequest
+        attributes:
+          $ref: '#/components/schemas/ContactSearchRequestAttributes'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    ContactSearchResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactSearchResponseResource'
+        meta:
+          $ref: '#/components/schemas/Meta'
+        links:
+          $ref: '#/components/schemas/Links'
+      description: |-
+        A model representing the top-level JSON:API document.
+
+        For more information on the top-level document, see the JSON:API specification
+        https://jsonapi.org/format/#document-top-level
+    ContactSearchResponseAttributes:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Contact first name.
+        middleName:
+          type: string
+          description: Contact middle name.
+        lastName:
+          type: string
+          description: Contact last name.
+        validDate:
+          type: string
+          format: date-time
+          description: Date on which the contact record was last validated.
+        lastUpdatedDate:
+          type: string
+          format: date-time
+          description: Date on which the contact record was last updated.
+        jobTitle:
+          type: string
+          description: Contact job title at current place of employment.
+        contactAccuracyScore:
+          type: number
+          format: double
+          description: This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 75 and maximum is 99.
+        managementLevel:
+          type: string
+          description: Contact management level.
+        school:
+          type: string
+          description: Get last Education information.
+        hasEmail:
+          type: boolean
+          description: Indicates whether ZoomInfo has an email address for the contact.
+        hasSupplementalEmail:
+          type: boolean
+          description: Indicates whether ZoomInfo has a supplemental email address for the contact.
+        hasDirectPhone:
+          type: boolean
+          description: Indicates whether ZoomInfo has a direct phone number for the contact.
+        hasMobilePhone:
+          type: boolean
+          description: Indicates whether ZoomInfo has a mobile phone number for the contact.
+        hasCompanyIndustry:
+          type: boolean
+          description: Indicates whether ZoomInfo has company industry for the contact.
+        hasCompanyPhone:
+          type: boolean
+          description: Indicates whether ZoomInfo has a company phone number for the contact.
+        hasCompanyStreet:
+          type: boolean
+          description: Indicates whether ZoomInfo has a street address for the contact.
+        hasCompanyState:
+          type: boolean
+          description: Indicates whether ZoomInfo has a state for the contact.
+        hasCompanyZipCode:
+          type: boolean
+          description: Indicates whether ZoomInfo has a Zip Code or Postal Code for the contact.
+        hasCompanyCountry:
+          type: boolean
+          description: Indicates whether ZoomInfo has a country for the contact.
+        hasCompanyRevenue:
+          type: boolean
+          description: Indicates whether ZoomInfo has company revenue data for the contact.
+        hasCompanyEmployeeCount:
+          type: boolean
+          description: Indicates whether ZoomInfo has company headcount data for the contact.
+        directPhoneDoNotCall:
+          type: boolean
+          description: Contact flagged with do not call for direct phone.
+        mobilePhoneDoNotCall:
+          type: boolean
+          description: Contact flagged with do not call for mobile phone.
+        company:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: Unique ZoomInfo identifier for a company.
+            name:
+              type: string
+              description: Company Name.
+          description: Contact's company data.
+    ContactSearchResponseResource:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          enum:
+            - ContactSearchResponse
+        attributes:
+          $ref: '#/components/schemas/ContactSearchResponseAttributes'
+      description: |-
+        A model representing a JSON:API resource object.
+
+        For more information about resource objects, see the JSON:API specification for
+        resource objects https://jsonapi.org/format/#document-resource-objects
+    DepartmentBudget:
+      type: object
+      required:
+        - marketingBudget
+        - financialBudget
+        - itBudget
+        - hrBudget
+      properties:
+        marketingBudget:
+          type: integer
+          format: int32
+        financialBudget:
+          type: integer
+          format: int32
+        itBudget:
+          type: integer
+          format: int32
+        hrBudget:
+          type: integer
+          format: int32
+    Education:
+      type: object
+      required:
+        - school
+        - educationDegree
+      properties:
+        school:
+          type: string
+        educationDegree:
+          $ref: '#/components/schemas/EducationDegree'
+    EducationDegree:
+      type: object
+      required:
+        - degree
+        - areaOfStudy
+      properties:
+        degree:
+          type: string
+        areaOfStudy:
+          type: string
+    EmployeeCountByDepartment:
+      type: object
+      required:
+        - cSuite
+        - finance
+        - humanResources
+        - sales
+        - operations
+        - informationTechnology
+        - engineeringAndTechnical
+        - marketing
+        - legal
+        - medicalAndHealth
+      properties:
+        cSuite:
+          type: integer
+          format: int32
+        finance:
+          type: integer
+          format: int32
+        humanResources:
+          type: integer
+          format: int32
+        sales:
+          type: integer
+          format: int32
+        operations:
+          type: integer
+          format: int32
+        informationTechnology:
+          type: integer
+          format: int32
+        engineeringAndTechnical:
+          type: integer
+          format: int32
+        marketing:
+          type: integer
+          format: int32
+        legal:
+          type: integer
+          format: int32
+        medicalAndHealth:
+          type: integer
+          format: int32
+    EmployeeGrowth:
+      type: object
+      required:
+        - oneYearGrowthRate
+        - twoYearGrowthRate
+        - employeeGrowthDataPoints
+      properties:
+        oneYearGrowthRate:
+          type: string
+        twoYearGrowthRate:
+          type: string
+        employeeGrowthDataPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              employeeCount:
+                type: integer
+                format: int64
+            required:
+              - label
+              - employeeCount
+    EmploymentHistory:
+      type: object
+      required:
+        - jobTitle
+        - managementLevel
+        - fromDate
+        - toDate
+        - company
+      properties:
+        jobTitle:
+          type: string
+        managementLevel:
+          type: array
+          items:
+            type: string
+        fromDate:
+          type: string
+          format: date-time
+        toDate:
+          type: string
+          format: date-time
+        company:
+          $ref: '#/components/schemas/Company'
+    Hashtag:
+      type: object
+      required:
+        - tag
+        - searchString
+        - displayLabel
+        - description
+        - group
+        - priority
+        - parentCategory
+        - displayScore
+        - hidden
+        - categorizedFlag
+        - label
+      properties:
+        tag:
+          type: string
+        searchString:
+          type: string
+        displayLabel:
+          type: string
+        description:
+          type: string
+        group:
+          type: string
+        priority:
+          type: integer
+          format: int32
+        parentCategory:
+          type: string
+        displayScore:
+          type: string
+        hidden:
+          type: boolean
+        categorizedFlag:
+          type: boolean
+        label:
+          type: string
+    Links:
+      type: object
+      additionalProperties:
+        type: string
+    MatchInsights:
+      type: object
+      required:
+        - resume
+        - externalUrl
+        - emailAddress
+        - supplementalEmail
+        - phone
+        - name
+        - location
+        - id
+      properties:
+        resume:
+          type: array
+          items:
+            type: string
+        externalUrl:
+          type: array
+          items:
+            type: string
+        emailAddress:
+          type: array
+          items:
+            type: string
+        supplementalEmail:
+          type: array
+          items:
+            type: string
+        phone:
+          type: array
+          items:
+            type: string
+        name:
+          type: array
+          items:
+            type: string
+        location:
+          type: array
+          items:
+            type: string
+        id:
+          type: array
+          items:
+            type: string
+    Meta:
+      type: object
+      additionalProperties: {}
+    PlatformApiVersions:
+      type: string
+      enum:
+        - Stable
+        - Next
+    TechAttribute:
+      type: object
+      required:
+        - tag
+        - categoryParent
+        - category
+        - vendor
+        - product
+        - attribute
+        - website
+        - logo
+        - domain
+        - createdTime
+        - modifiedTime
+        - description
+      properties:
+        tag:
+          type: string
+        categoryParent:
+          type: string
+        category:
+          type: string
+        vendor:
+          type: string
+        product:
+          type: string
+        attribute:
+          type: string
+        website:
+          type: string
+        logo:
+          type: string
+        domain:
+          type: string
+        createdTime:
+          type: string
+        modifiedTime:
+          type: string
+        description:
+          type: string
+    ZoomInfo.Core.Foundations.ErrorModel:
+      type: object
+      required:
+        - id
+        - code
+        - status
+      properties:
+        id:
+          type: string
+          description: The unique id used to identify this specific error instance
+        code:
+          type: string
+          description: The error code describing the error category. A full list of error codes can be found in the documentation for each service
+        detail:
+          type: string
+          description: Message containing the specific details about this occurrence of the error
+        source:
+          allOf:
+            - $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorSourceModel'
+          description: An optional object identifying which part of the request caused the error
+        status:
+          type: string
+          description: The HTTP status code for the error
+        title:
+          type: string
+          description: The error name that describes this type of error
+      description: |-
+        A representation of a specific error raised during an API call. This is included
+        in the errors property of the ErrorResponse body.
+    ZoomInfo.Core.Foundations.ErrorResponseModel:
+      type: object
+      required:
+        - errors
+      properties:
+        detail:
+          type: string
+          description: A high-level detail of the error(s) that occurred during the request
+        title:
+          type: string
+          description: A high-level summary of the error(s) detected
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZoomInfo.Core.Foundations.ErrorModel'
+          description: The list of errors raised during the request
+      description: The standard error response body model for the ZoomInfo API.
+    ZoomInfo.Core.Foundations.ErrorSourceModel:
+      type: object
+      properties:
+        cookie:
+          type: string
+          description: Identifies the cookie name that caused the issue
+        header:
+          type: string
+          description: Identifies the header name that caused the error
+        pointer:
+          type: string
+          description: An RFC 6901 compliant JSON pointer to the entity in the request body that caused the error
+        parameter:
+          type: string
+          description: The name of the path or query parameter that caused the error
+      description: |-
+        An optional model, mostly used when returning a 400 error, to show the caller where in the
+        request (cookies, header, params, or body) caused the API error
+  securitySchemes:
+    OAuth2Auth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.zoominfo.com
+          tokenUrl: https://okta-login.zoominfo.com/oauth2/default/v1/token
+          scopes:
+            api:search:contact: Search ZoomInfo Contact Data
+            api:search:company: Search ZoomInfo Company Data
+            api:enrich:contact: Enrich ZoomInfo Contact Data
+            api:enrich:company: Enrich ZoomInfo Company Data
+servers:
+  - url: https://api.zoominfo.com
+    description: Base URL for the Platform API
+    variables: {}
