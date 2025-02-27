@@ -1,5 +1,5 @@
 ---
-title: New Page
+title: New Page Updated from github
 deprecated: false
 hidden: false
 metadata:
